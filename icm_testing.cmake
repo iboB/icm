@@ -26,6 +26,7 @@
 #
 #   1.00 (2020-12-25) Initial standalone release
 #
+include_guard(GLOBAL)
 
 # icm_add_test
 #
@@ -43,7 +44,7 @@ macro(icm_add_test)
         target_link_libraries(${ARG_TARGET} PRIVATE ${ARG_LIBRARIES})
     endif()
     if(NOT "${ARG_FOLDER}" STREQUAL "")
-        set_target_properties(${ARG_TARGET} PROPERTIES FOLDER ${FOLDER})
+        set_target_properties(${ARG_TARGET} PROPERTIES FOLDER ${ARG_FOLDER})
     endif()
     add_test(NAME ${ARG_NAME} COMMAND ${ARG_TARGET})
 endmacro()

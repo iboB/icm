@@ -26,6 +26,7 @@
 #
 #   1.00 (2020-12-25) Initial standalone release
 #
+include_guard(GLOBAL)
 
 # icm_add_shared_lib
 #
