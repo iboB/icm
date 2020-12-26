@@ -61,11 +61,17 @@ endmacro()
 # The executable for `icm_add_doctest_lib_test(core mylib test_core.cpp)` is:
 # test-mylib-core
 macro(icm_add_doctest_lib_test test lib)
+    cmake_parse_arguments(ARG "" "" "SOURCES;LIBRARIES" ${ARGN})
     icm_add_test(
         NAME ${test}
         TARGET test-${lib}-${test}
-        LIBRARIES doctest-main ${lib}
-        SOURCES ${ARGN}
+        LIBRARIES
+            doctest-main
+            ${lib}
+            ${ARG_LIBRARIES}
+        SOURCES
+            ${ARG_UNPARSED_ARGUMENTS}
+            ${ARG_SOURCES}
         FOLDER test
     )
 endmacro()
