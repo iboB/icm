@@ -72,7 +72,7 @@ set(icm_san_flags "")
 if(MSVC)
     set(icm_warning_flags "-D_CRT_SECURE_NO_WARNINGS /wd4251 /wd4275 /Zc:__cplusplus")
 else()
-    set(icm_warning_flags "-Wall -Wextra -Wno-type-limits")
+    set(icm_warning_flags "-Wall -Wextra")
 endif()
 
 if(SAN_THREAD)
