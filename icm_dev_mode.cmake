@@ -75,12 +75,13 @@ else()
     set(icm_warning_flags "-Wall -Wextra -Wno-type-limits")
 endif()
 
-if(icm_tsan)
+if(SAN_THREAD)
     if(NOT MSVC)
         set(icm_san_flags "-fsanitize=thread -g")
     endif()
-elseif(icm_asan)
+elseif(SAN_ADDR)
     if(MSVC)
+        # TODO: test and then enable
         # set(icm_san_flags "-fsanitize=address")
     elseif(APPLE)
         # apple clang doesn't support the leak sanitizer
