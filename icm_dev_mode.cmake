@@ -1,7 +1,7 @@
 # icm_dev_mode
 #
 # MIT License:
-# Copyright(c) 2020 Borislav Stanimirov
+# Copyright(c) 2020-2021 Borislav Stanimirov
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files(the
@@ -24,6 +24,8 @@
 #
 #           VERSION HISTORY
 #
+#   1.01 (2021-01-12) Fixed check for SAN_* options
+#                     Removed warning disable which was left in by mistake
 #   1.00 (2020-12-25) Initial standalone release
 #
 #           DOCUMENTATION
