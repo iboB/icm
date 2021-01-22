@@ -24,6 +24,7 @@
 #
 #           VERSION HISTORY
 #
+#   1.02 (2021-01-22) Enable MSVC unused argument warning with /W3
 #   1.01 (2021-01-12) Fixed check for SAN_* options
 #                     Removed warning disable which was left in by mistake
 #   1.00 (2020-12-25) Initial standalone release
@@ -72,7 +73,7 @@ option(SAN_ADDR "${CMAKE_PROJECT_NAME}: sanitize address" OFF)
 
 set(icm_san_flags "")
 if(MSVC)
-    set(icm_warning_flags "-D_CRT_SECURE_NO_WARNINGS /wd4251 /wd4275 /Zc:__cplusplus")
+    set(icm_warning_flags "-D_CRT_SECURE_NO_WARNINGS /wd4251 /wd4275 /w34100 /Zc:__cplusplus")
 else()
     set(icm_warning_flags "-Wall -Wextra")
 endif()
