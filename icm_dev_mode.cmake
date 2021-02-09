@@ -24,6 +24,8 @@
 #
 #           VERSION HISTORY
 #
+#   1.03 (2021-02-09) Fixed ICM_DEV_MODE setting for subdirs within other
+#                     icm_dev_mode-enabled subdirs
 #   1.02 (2021-01-22) Enable MSVC unused argument warning with /W3
 #   1.01 (2021-01-12) Fixed check for SAN_* options
 #                     Removed warning disable which was left in by mistake
@@ -51,10 +53,12 @@
 # * set runtime out directory to bin (useful for msvc so dlls are next to exes)
 
 if (NOT CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
+    set(ICM_DEV_MODE OFF)
     return()
 endif()
 
 if (ICM_NO_DEVMODE)
+    set(ICM_DEV_MODE OFF)
     return()
 endif()
 
