@@ -1,4 +1,4 @@
-# icm_dev_mode
+# icm_dev_mode v1.04
 #
 # MIT License:
 # Copyright(c) 2020-2021 Borislav Stanimirov
@@ -24,6 +24,7 @@
 #
 #           VERSION HISTORY
 #
+#   1.04 (2021-09-28) /permissive- for msvc
 #   1.03 (2021-02-09) Fixed ICM_DEV_MODE setting for subdirs within other
 #                     icm_dev_mode-enabled subdirs
 #   1.02 (2021-01-22) Enable MSVC unused argument warning with /W3
@@ -47,6 +48,7 @@
 # * No extensions
 # * Stanard required
 # * More warnigns for gcc and clang
+# * /permissive- for msvc
 # * Disable some overly aggressive warnings for msvc
 # * options SAN_THREAD and SAN_ADDR (only one or zero of them must be ON)
 #   to enable thread and address sanitizers
@@ -77,9 +79,9 @@ option(SAN_ADDR "${CMAKE_PROJECT_NAME}: sanitize address" OFF)
 
 set(icm_san_flags "")
 if(MSVC)
-    set(icm_warning_flags "-D_CRT_SECURE_NO_WARNINGS /wd4251 /wd4275 /w34100 /Zc:__cplusplus")
+    set(icm_compiler_flags "-D_CRT_SECURE_NO_WARNINGS /wd4251 /wd4275 /w34100 /Zc:__cplusplus /permissive-")
 else()
-    set(icm_warning_flags "-Wall -Wextra")
+    set(icm_compiler_flags "-Wall -Wextra")
 endif()
 
 if(SAN_THREAD)
@@ -98,8 +100,8 @@ elseif(SAN_ADDR)
     endif()
 endif()
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${icm_warning_flags} ${icm_san_flags}")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${icm_warning_flags} ${icm_san_flags}")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${icm_compiler_flags} ${icm_san_flags}")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${icm_compiler_flags} ${icm_san_flags}")
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${icm_san_flags}")
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${icm_san_flags}")
 
