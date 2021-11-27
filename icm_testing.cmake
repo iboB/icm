@@ -1,7 +1,7 @@
 # icm_testing
 #
 # MIT License:
-# Copyright(c) 2020 Borislav Stanimirov
+# Copyright(c) 2020-2021 Borislav Stanimirov
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files(the
@@ -24,6 +24,7 @@
 #
 #           VERSION HISTORY
 #
+#   1.01 (2021-11-27) Namespace doctest lib tests with library name. Docs
 #   1.00 (2020-12-25) Initial standalone release
 #
 include_guard(GLOBAL)
@@ -52,18 +53,25 @@ endmacro()
 # icm_add_doctest_lib_test
 #
 # Creates an executable target, link with doctest and a given lib, add
-# as a test and add to solution folder "test".
+# as a test and add to a solution folder "test".
 #
 # Args:
 #   * test - name of the test (visible when ctest is run)
 #   * lib  - name of the library to test
+#   * ...  - sources of the test
+#
+# Optional named args:
+#   * SOURCES ... - explicitly specify sources
+#   * LIBRARIES ... - specify additional librarires
+#
 # Notes:
-# The executable for `icm_add_doctest_lib_test(core mylib test_core.cpp)` is:
-# test-mylib-core
+# `icm_add_doctest_lib_test(core mylib test_core.cpp)` will create:
+#   * named test: mylib-core
+#   * executable target: test-mylib-core
 macro(icm_add_doctest_lib_test test lib)
     cmake_parse_arguments(ARG "" "" "SOURCES;LIBRARIES" ${ARGN})
     icm_add_test(
-        NAME ${test}
+        NAME ${lib}-${test}
         TARGET test-${lib}-${test}
         LIBRARIES
             doctest-main
