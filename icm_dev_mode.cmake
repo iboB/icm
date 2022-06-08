@@ -1,7 +1,7 @@
-# icm_dev_mode v1.04
+# icm_dev_mode v1.05
 #
 # MIT License:
-# Copyright(c) 2020-2021 Borislav Stanimirov
+# Copyright(c) 2020-2022 Borislav Stanimirov
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files(the
@@ -24,6 +24,7 @@
 #
 #           VERSION HISTORY
 #
+#   1.05 (2022-06-08) Emabled more potentially useful L4 warnings for msvc
 #   1.04 (2021-09-28) /permissive- for msvc
 #   1.03 (2021-02-09) Fixed ICM_DEV_MODE setting for subdirs within other
 #                     icm_dev_mode-enabled subdirs
@@ -50,6 +51,7 @@
 # * More warnigns for gcc and clang
 # * /permissive- for msvc
 # * Disable some overly aggressive warnings for msvc
+# * Enable potentially useful L4 warnings for msvc
 # * options SAN_THREAD and SAN_ADDR (only one or zero of them must be ON)
 #   to enable thread and address sanitizers
 # * set runtime out directory to bin (useful for msvc so dlls are next to exes)
@@ -79,7 +81,10 @@ option(SAN_ADDR "${CMAKE_PROJECT_NAME}: sanitize address" OFF)
 
 set(icm_san_flags "")
 if(MSVC)
-    set(icm_compiler_flags "-D_CRT_SECURE_NO_WARNINGS /wd4251 /wd4275 /w34100 /Zc:__cplusplus /permissive-")
+    set(icm_compiler_flags "-D_CRT_SECURE_NO_WARNINGS /Zc:__cplusplus /permissive-\
+        /w34100 /w34189 /w34701 /w34702 /w34703 /w34706 /w34714 /w34913\
+        /wd4251 /wd4275"
+    )
 else()
     set(icm_compiler_flags "-Wall -Wextra")
 endif()
