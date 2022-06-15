@@ -24,7 +24,8 @@
 #
 #           VERSION HISTORY
 #
-#   1.05 (2022-06-08) Emabled more potentially useful L4 warnings for msvc
+#   1.05 (2022-06-15) Emabled more potentially useful L4 warnings for msvc.
+#                     Set CMAKE_LINK_DEPENDS_NO_SHARED to ON
 #   1.04 (2021-09-28) /permissive- for msvc
 #   1.03 (2021-02-09) Fixed ICM_DEV_MODE setting for subdirs within other
 #                     icm_dev_mode-enabled subdirs
@@ -75,6 +76,8 @@ endif()
 set(CMAKE_CXX_STANDARD ${ICM_DEV_CXX_STANDARD})
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+set(CMAKE_LINK_DEPENDS_NO_SHARED ON)
 
 option(SAN_THREAD "${CMAKE_PROJECT_NAME}: sanitize thread" OFF)
 option(SAN_ADDR "${CMAKE_PROJECT_NAME}: sanitize address" OFF)
