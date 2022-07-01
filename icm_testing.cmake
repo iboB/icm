@@ -24,6 +24,7 @@
 #
 #           VERSION HISTORY
 #
+#   1.02 (2022-07-02) Removed doctest macro. Moved to another lib (doctest-util)
 #   1.01 (2021-11-27) Namespace doctest lib tests with library name. Docs
 #   1.00 (2020-12-25) Initial standalone release
 #
@@ -48,38 +49,4 @@ macro(icm_add_test)
         set_target_properties(${ARG_TARGET} PROPERTIES FOLDER ${ARG_FOLDER})
     endif()
     add_test(NAME ${ARG_NAME} COMMAND ${ARG_TARGET})
-endmacro()
-
-# icm_add_doctest_lib_test
-#
-# Creates an executable target, link with doctest and a given lib, add
-# as a test and add to a solution folder "test".
-#
-# Args:
-#   * test - name of the test (visible when ctest is run)
-#   * lib  - name of the library to test
-#   * ...  - sources of the test
-#
-# Optional named args:
-#   * SOURCES ... - explicitly specify sources
-#   * LIBRARIES ... - specify additional librarires
-#
-# Notes:
-# `icm_add_doctest_lib_test(core mylib test_core.cpp)` will create:
-#   * named test: mylib-core
-#   * executable target: test-mylib-core
-macro(icm_add_doctest_lib_test test lib)
-    cmake_parse_arguments(ARG "" "" "SOURCES;LIBRARIES" ${ARGN})
-    icm_add_test(
-        NAME ${lib}-${test}
-        TARGET test-${lib}-${test}
-        LIBRARIES
-            doctest-main
-            ${lib}
-            ${ARG_LIBRARIES}
-        SOURCES
-            ${ARG_UNPARSED_ARGUMENTS}
-            ${ARG_SOURCES}
-        FOLDER test
-    )
 endmacro()
