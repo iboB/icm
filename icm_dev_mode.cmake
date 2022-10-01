@@ -49,7 +49,7 @@
 # The settings are:
 # * C++ standard (default is 17. Override with ICM_DEV_CXX_STANDARD)
 # * No extensions
-# * Stanard required
+# * Standard required
 # * More warnigns for gcc and clang
 # * /permissive- for msvc
 # * Disable some overly aggressive warnings for msvc
@@ -57,6 +57,7 @@
 # * options SAN_THREAD and SAN_ADDR (only one or zero of them must be ON)
 #   to enable thread and address sanitizers
 # * set runtime out directory to bin (useful for msvc so dlls are next to exes)
+# * CMAKE_LINK_DEPENDS_NO_SHARED to ON
 
 if (NOT CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
     set(ICM_DEV_MODE OFF)
