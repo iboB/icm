@@ -1,7 +1,8 @@
-# icm_dev_mode v1.05
+# icm_dev_mode
 #
+# SPDX-License-Identifier: MIT
 # MIT License:
-# Copyright(c) 2020-2022 Borislav Stanimirov
+# Copyright (c) 2020-2022 Borislav Stanimirov
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files(the
