@@ -1,7 +1,8 @@
 # icm_testing
 #
+# SPDX-License-Identifier: MIT
 # MIT License:
-# Copyright(c) 2020-2021 Borislav Stanimirov
+# Copyright (c) 2020-2022 Borislav Stanimirov
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files(the
@@ -24,6 +25,7 @@
 #
 #           VERSION HISTORY
 #
+#   1.03 (2022-10-01) Labels support
 #   1.02 (2022-07-02) Removed doctest macro. Moved to another lib (doctest-util)
 #   1.01 (2021-11-27) Namespace doctest lib tests with library name. Docs
 #   1.00 (2020-12-25) Initial standalone release
@@ -38,9 +40,10 @@ include_guard(GLOBAL)
 #   * TARGET target   - name of the executable
 #   * SOURCES sources - sources for the executable
 #   * LIBRARIES libs  - libraries to link with
+#   * LABELS          - test labels
 #   * FOLDER folder   - MSVC solution folder for the target
 macro(icm_add_test)
-    cmake_parse_arguments(ARG "" "NAME;TARGET;FOLDER" "SOURCES;LIBRARIES" ${ARGN})
+    cmake_parse_arguments(ARG "" "NAME;TARGET;FOLDER" "SOURCES;LIBRARIES;LABELS" ${ARGN})
     add_executable(${ARG_TARGET} ${ARG_SOURCES})
     if(DEFINED ARG_LIBRARIES)
         target_link_libraries(${ARG_TARGET} PRIVATE ${ARG_LIBRARIES})
@@ -49,4 +52,7 @@ macro(icm_add_test)
         set_target_properties(${ARG_TARGET} PROPERTIES FOLDER ${ARG_FOLDER})
     endif()
     add_test(NAME ${ARG_NAME} COMMAND ${ARG_TARGET})
+    if(DEFINED ARG_LABELS)
+        set_tests_properties(${ARG_NAME} PROPERTIES LABELS ${ARG_LABELS})
+    endif()
 endmacro()
