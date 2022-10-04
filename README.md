@@ -1,6 +1,6 @@
-# icm: iboB's CMake Macros
+# icm: iboB's CMake Modules
 
-A collection of small independent CMake modules which provide useful (well, at least to me) CMake macros and functions.
+A collection of small independent CMake modules which provide useful (well, at least to me) functionalities.
 
 CMake version 3.10 or later is assumed.
 
