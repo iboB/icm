@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: MIT
 # MIT License:
-# Copyright (c) 2021 Borislav Stanimirov
+# Copyright (c) 2021-2022 Borislav Stanimirov
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files(the
@@ -25,26 +25,28 @@
 #
 #           VERSION HISTORY
 #
+#   1.01 (2022-10-04) All vars prefixed with TARGET_
 #   1.00 (2021-01-12) Initial standalone release
 #
 #           DOCUMENTATION
 #
 # A target platform module. Include this file to get info about the target
-# platform. Besides concrete platforms, common macros are also available.
+# platform. Besides concrete platforms, common ones are also available:
+# For example APPLE, ANDROID, and LINUX are all UNIX
 include_guard(GLOBAL)
 
 if(EMSCRIPTEN)
     message("-- ICM detected target platform: Emscripten")
     set(TARGET_PLATFORM_EMSCRIPTEN 1)
-    set(PLATFORM_BROWSER 1)
+    set(TARGET_PLATFORM_BROWSER 1)
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Android")
     message("-- ICM detected target platform: Android")
     set(TARGET_PLATFORM_ANDROID 1)
-    set(PLATFORM_UNIX 1)
+    set(TARGET_PLATFORM_UNIX 1)
     set(TARGET_PLATFORM_MOBILE 1)
 elseif(APPLE)
     set(TARGET_PLATFORM_APPLE 1)
-    set(PLATFORM_UNIX 1)
+    set(TARGET_PLATFORM_UNIX 1)
     if(CMAKE_SYSTEM_NAME STREQUAL "iOS")
         message("-- ICM detected target platform: iOS")
         set(TARGET_PLATFORM_IOS 1)
@@ -67,8 +69,8 @@ elseif(WIN32)
 elseif(UNIX)
     message("-- ICM detected target platform: Linux")
     set(TARGET_PLATFORM_LINUX 1)
-    set(PLATFORM_UNIX 1)
+    set(TARGET_PLATFORM_UNIX 1)
     set(TARGET_PLATFORM_DESKTOP 1)
 else()
-    message(FATAL_ERROR "ICM Error: Unknown target platform")
+    message(FATAL_ERROR "ICM Error: Cannot infer target platform")
 endif()
