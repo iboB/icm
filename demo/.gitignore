@@ -1,0 +1,7 @@
+build/
+out/
+temp/
+
+# ides
+.vscode/
+.vs/
