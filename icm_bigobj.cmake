@@ -35,7 +35,7 @@ include_guard(GLOBAL)
 # Marks a source file as a "big object"
 # For MSVC adds the /bigobj flag
 # On other compilers it does nothing
-macro(icm_bigobj srcFile)
+function(icm_bigobj srcFile)
     if(MSVC)
         get_source_file_property(icm_bigobjFileProps ${srcFile} COMPILE_FLAGS)
         if(${icm_bigobjFileProps} STREQUAL "NOTFOUND")
@@ -43,4 +43,4 @@ macro(icm_bigobj srcFile)
         endif()
         set_source_files_properties(${srcFile} PROPERTIES COMPILE_FLAGS "${icm_bigobjFileProps} /bigobj")
     endif()
-endmacro(icm_bigobj)
+endfunction(icm_bigobj)
