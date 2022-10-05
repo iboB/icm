@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: MIT
 # MIT License:
-# Copyright (c) 2020 Borislav Stanimirov
+# Copyright (c) 2020-2022 Borislav Stanimirov
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files(the
@@ -25,6 +25,7 @@
 #
 #           VERSION HISTORY
 #
+#   1.01 (2022-10-05) Macros to functions
 #   1.00 (2020-12-25) Initial standalone release
 #
 include_guard(GLOBAL)
@@ -53,7 +54,7 @@ include_guard(GLOBAL)
 # #else
 # #   define MYLIB_API
 # #endif
-macro(icm_add_shared_lib target cname)
+function(icm_add_shared_lib target cname)
     add_library(${target} SHARED ${ARGN})
     if(NOT WIN32)
         target_compile_options(${target} PRIVATE -fvisibility=hidden)
@@ -63,7 +64,7 @@ macro(icm_add_shared_lib target cname)
         PRIVATE -DBUILDING_${cname}=1
         PUBLIC -D${cname}_SHARED=1
     )
-endmacro()
+endfunction()
 
 # icm_add_lib
 #
@@ -73,10 +74,10 @@ endmacro()
 # ... or ...
 # ${cname}_STATIC is true
 # ... in which case it adds a static library
-macro(icm_add_lib target cname)
+function(icm_add_lib target cname)
     if(ICM_STATIC_LIBS OR ${cname}_STATIC)
         add_library(${target} STATIC ${ARGN})
     else()
         icm_add_shared_lib(${target} ${cname} ${ARGN})
     endif()
-endmacro()
+endfunction()
