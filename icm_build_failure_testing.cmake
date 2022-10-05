@@ -159,7 +159,7 @@ function(icm_add_build_failure_test)
         set(ARG_LABELS "build-failure")
     endif()
 
-    set_tests_properties(${ARG_NAME} PROPERTIES LABELS ${ARG_LABELS})
+    set_tests_properties(${ARG_NAME} PROPERTIES LABELS "${ARG_LABELS}")
 endfunction()
 
 # icm_add_multiple_build_failure_tests
