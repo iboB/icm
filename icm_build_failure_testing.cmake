@@ -131,16 +131,16 @@ function(icm_add_build_failure_test)
 
         add_test(
             NAME ${ARG_NAME}
-            # provide the configuration as a command line arg here
+            # provide the config as a command line arg here
             # we cannot configure the file with a generator expression
-            COMMAND ${CMAKE_COMMAND} -DCFG=$<CONFIGURATION> -P ${ARG_TARGET}.cmake
+            COMMAND ${CMAKE_COMMAND} -DCFG=$<CONFIG> -P ${ARG_TARGET}.cmake
             WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
         )
     else()
         # we look for error matches in arguments
         add_test(
             NAME ${ARG_NAME}
-            COMMAND ${CMAKE_COMMAND} --build . --target ${ARG_TARGET} --config $<CONFIGURATION>
+            COMMAND ${CMAKE_COMMAND} --build . --target ${ARG_TARGET} --config $<CONFIG>
             WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
         )
         if(DEFINED ARG_ERROR_MATCHES)
