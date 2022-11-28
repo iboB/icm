@@ -171,6 +171,7 @@ endfunction()
 #   * SOURCES sources - List of sources to add. Each source will lead to a new
 #                       test being added
 #   * PREFIX prefix   - Optional. Prefix string to add to each test name
+#   * PROPERTIES props- Optional. Target properties for all targets
 #
 #   * LIBRARIES, LABELS, FOLDER, ERROR_MATCHES
 #      forwarded to icm_add_build_failure_test
@@ -179,7 +180,7 @@ endfunction()
 # If ERROR_MATCHES is not present, each source is forwarded as PARSE
 #
 function(icm_add_multiple_build_failure_tests)
-    cmake_parse_arguments(ARG "" "PREFIX;FOLDER" "SOURCES;LIBRARIES;ERROR_MATCHES;LABELS" ${ARGN})
+    cmake_parse_arguments(ARG "" "PREFIX;FOLDER" "SOURCES;LIBRARIES;ERROR_MATCHES;LABELS;PROPERTIES" ${ARGN})
     if(DEFINED ARG_UNPARSED_ARGUMENTS)
         message(NOTICE "icm_add_multiple_build_failure_tests called with unknown arguments")
     endif()
@@ -206,6 +207,10 @@ function(icm_add_multiple_build_failure_tests)
             ERROR_MATCHES "${ARG_ERROR_MATCHES}"
             FOLDER ${ARG_FOLDER}
         )
+
+        if(DEFINED ARG_PROPERTIES)
+            set_target_properties(${testName}-test PROPERTIES ${ARG_PROPERTIES})
+        endif()
     endforeach()
 endfunction()
 
