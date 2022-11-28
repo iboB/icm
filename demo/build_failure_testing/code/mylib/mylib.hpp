@@ -18,6 +18,7 @@ template <typename A, typename B>
 auto mul(A a, B b)
 {
     static_assert(std::is_integral_v<A> && std::is_integral_v<B>, "mul: values must be integral");
+    return a * b;
 }
 
 }
