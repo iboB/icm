@@ -86,7 +86,10 @@ option(SAN_ADDR "${CMAKE_PROJECT_NAME}: sanitize address" OFF)
 
 set(icm_san_flags "")
 if(MSVC)
+    # /Zc:preprocessor - incompatible with Windows.h
+    # /Zc:templateScope - TODO: add when msvc 17.5 is the norm
     set(icm_compiler_flags "-D_CRT_SECURE_NO_WARNINGS /Zc:__cplusplus /permissive-\
+        /volatile:iso /Zc:throwingNew /utf-8\
         /w34100 /w34189 /w34701 /w34702 /w34703 /w34706 /w34714 /w34913\
         /wd4251 /wd4275"
     )
