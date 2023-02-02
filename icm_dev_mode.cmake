@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: MIT
 # MIT License:
-# Copyright (c) 2020-2022 Borislav Stanimirov
+# Copyright (c) 2020-2023 Borislav Stanimirov
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files(the
@@ -25,6 +25,9 @@
 #
 #           VERSION HISTORY
 #
+#   1.06 (2023-02-02) C standard
+#                     MSVC asan support
+#                     More MSVC warnings and flags
 #   1.05 (2022-06-15) Emabled more potentially useful L4 warnings for msvc.
 #                     Set CMAKE_LINK_DEPENDS_NO_SHARED to ON
 #   1.04 (2021-09-28) /permissive- for msvc
@@ -48,6 +51,7 @@
 #
 # The settings are:
 # * C++ standard (default is 17. Override with ICM_DEV_CXX_STANDARD)
+# * C standard (default is 99. Override with ICM_DEV_C_STANDARD)
 # * No extensions
 # * Standard required
 # * More warnigns for gcc and clang
@@ -74,10 +78,16 @@ set(ICM_DEV_MODE ON)
 if (NOT ICM_DEV_CXX_STANDARD)
     set(ICM_DEV_CXX_STANDARD 17)
 endif()
-
 set(CMAKE_CXX_STANDARD ${ICM_DEV_CXX_STANDARD})
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+if (NOT ICM_DEV_C_STANDARD)
+    set(ICM_DEV_C_STANDARD 99)
+endif()
+set(CMAKE_C_STANDARD ${ICM_DEV_C_STANDARD})
+set(CMAKE_C_EXTENSIONS OFF)
+set(CMAKE_C_STANDARD_REQUIRED ON)
 
 set(CMAKE_LINK_DEPENDS_NO_SHARED ON)
 
@@ -103,8 +113,7 @@ if(SAN_THREAD)
     endif()
 elseif(SAN_ADDR)
     if(MSVC)
-        # TODO: test and then enable
-        # set(icm_san_flags "-fsanitize=address")
+        set(icm_san_flags "/fsanitize=address")
     elseif(APPLE)
         # apple clang doesn't support the leak sanitizer
         set(icm_san_flags "-fsanitize=address,undefined -pthread -g")
