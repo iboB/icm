@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: MIT
 # MIT License:
-# Copyright (c) 2022 Borislav Stanimirov
+# Copyright (c) 2022-2023 Borislav Stanimirov
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files(the
@@ -25,7 +25,8 @@
 #
 #           VERSION HISTORY
 #
-#   1.00 (2022-xx-xx) Initial release
+#   1.01 (2023-02-02) Allow target properties for multi-targets funcs
+#   1.00 (2022-10-04) Initial release
 #
 #           NOTES
 # This file is bundled with icm_build_failure_parse_and_run.cmake and expects
