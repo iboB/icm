@@ -94,7 +94,10 @@ set(CMAKE_LINK_DEPENDS_NO_SHARED ON)
 option(SAN_THREAD "${CMAKE_PROJECT_NAME}: sanitize thread" OFF)
 option(SAN_ADDR "${CMAKE_PROJECT_NAME}: sanitize address" OFF)
 
-set(icm_san_flags "")
+set(icm_compiler_flags "")
+set(icm_linker_flags "")
+set(icm_compiler_and_linker_flags "")
+
 if(MSVC)
     # /Zc:preprocessor - incompatible with Windows.h
     # /Zc:templateScope - TODO: add when msvc 17.5 is the norm
@@ -109,23 +112,23 @@ endif()
 
 if(SAN_THREAD)
     if(NOT MSVC)
-        set(icm_san_flags "-fsanitize=thread -g")
+        set(icm_compiler_and_linker_flags "${icm_compiler_and_linker_flags} -fsanitize=thread -g")
     endif()
 elseif(SAN_ADDR)
     if(MSVC)
-        set(icm_san_flags "/fsanitize=address")
+        set(icm_compiler_flags "${icm_compiler_flags} /fsanitize=address")
     elseif(APPLE)
         # apple clang doesn't support the leak sanitizer
-        set(icm_san_flags "-fsanitize=address,undefined -pthread -g")
+        set(icm_compiler_and_linker_flags "${icm_compiler_and_linker_flags} -fsanitize=address,undefined -pthread -g")
     else()
-        set(icm_san_flags "-fsanitize=address,undefined,leak -pthread -g")
+        set(icm_compiler_and_linker_flags "${icm_compiler_and_linker_flags} -fsanitize=address,undefined,leak -pthread -g")
     endif()
 endif()
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${icm_compiler_flags} ${icm_san_flags}")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${icm_compiler_flags} ${icm_san_flags}")
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${icm_san_flags}")
-set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${icm_san_flags}")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${icm_compiler_flags} ${icm_compiler_and_linker_flags}")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${icm_compiler_flags} ${icm_compiler_and_linker_flags}")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${icm_linker_flags} ${icm_compiler_and_linker_flags}")
+set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${icm_linker_flags} ${icm_compiler_and_linker_flags}")
 
 # all binaries to bin
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
