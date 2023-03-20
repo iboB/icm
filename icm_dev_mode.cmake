@@ -25,6 +25,7 @@
 #
 #           VERSION HISTORY
 #
+#   1.07 (2023-03-20) Improved sanitizer support: finer grain selection
 #   1.06 (2023-02-02) C standard
 #                     MSVC asan support
 #                     More MSVC warnings and flags
@@ -93,6 +94,8 @@ set(CMAKE_LINK_DEPENDS_NO_SHARED ON)
 
 option(SAN_THREAD "${CMAKE_PROJECT_NAME}: sanitize thread" OFF)
 option(SAN_ADDR "${CMAKE_PROJECT_NAME}: sanitize address" OFF)
+option(SAN_UB "${CMAKE_PROJECT_NAME}: sanitize undefined behavior" OFF)
+option(SAN_LEAK "${CMAKE_PROJECT_NAME}: sanitize leaks" OFF)
 
 set(icm_compiler_flags "")
 set(icm_linker_flags "")
@@ -110,18 +113,33 @@ else()
     set(icm_compiler_flags "-Wall -Wextra")
 endif()
 
-if(SAN_THREAD)
-    if(NOT MSVC)
-        set(icm_compiler_and_linker_flags "${icm_compiler_and_linker_flags} -fsanitize=thread -g")
-    endif()
-elseif(SAN_ADDR)
-    if(MSVC)
+if(MSVC)
+    if(SAN_ADDR)
         set(icm_compiler_flags "${icm_compiler_flags} /fsanitize=address")
-    elseif(APPLE)
-        # apple clang doesn't support the leak sanitizer
-        set(icm_compiler_and_linker_flags "${icm_compiler_and_linker_flags} -fsanitize=address,undefined -pthread -g")
+    endif()
+    if(SAN_THREAD OR SAN_UB OR SAN_LEAK)
+        message(WARNING "Unsupported sanitizers requested for msvc. Ignored")
+    endif()
+else()
+    if(SAN_THREAD)
+        set(icm_compiler_and_linker_flags "${icm_compiler_and_linker_flags} -fsanitize=thread -g")
+        if(SAN_ADDR OR SAN_UB OR SAN_LEAK)
+            message(WARNING "Incompatible sanitizer combination requested. Only 'SAN_THREAD' will be respected")
+        endif()
     else()
-        set(icm_compiler_and_linker_flags "${icm_compiler_and_linker_flags} -fsanitize=address,undefined,leak -pthread -g")
+        if(SAN_ADDR)
+            set(icm_compiler_and_linker_flags "${icm_compiler_and_linker_flags} -fsanitize=address -pthread")
+        endif()
+        if(SAN_UB)
+            set(icm_compiler_and_linker_flags "${icm_compiler_and_linker_flags} -fsanitize=undefined")
+        endif()
+        if(SAN_LEAK)
+            if(APPLE)
+                message(WARNING "Unsupported leak sanitizer requested for Apple. Ignored")
+            else()
+                set(icm_compiler_and_linker_flags "${icm_compiler_and_linker_flags} -fsanitize=leak")
+            endif()
+        endif()
     endif()
 endif()
 
