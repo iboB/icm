@@ -26,6 +26,7 @@
 #           VERSION HISTORY
 #
 #   1.07 (2023-03-20) Improved sanitizer support: finer grain selection
+#                     MSVC /W4 by default
 #   1.06 (2023-02-02) C standard
 #                     MSVC asan support
 #                     More MSVC warnings and flags
@@ -104,7 +105,7 @@ set(icm_compiler_and_linker_flags "")
 if(MSVC)
     # /Zc:preprocessor - incompatible with Windows.h
     # /Zc:templateScope - TODO: add when msvc 17.5 is the norm
-    set(icm_compiler_flags "-D_CRT_SECURE_NO_WARNINGS /Zc:__cplusplus /permissive-\
+    set(icm_compiler_flags "/W4 -D_CRT_SECURE_NO_WARNINGS /Zc:__cplusplus /permissive-\
         /volatile:iso /Zc:throwingNew /utf-8 -DNOMINMAX=1\
         /w34100 /w34189 /w34701 /w34702 /w34703 /w34706 /w34714 /w34913\
         /wd4251 /wd4275"
