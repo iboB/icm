@@ -99,13 +99,13 @@ option(SAN_ADDR "${CMAKE_PROJECT_NAME}: sanitize address" OFF)
 option(SAN_UB "${CMAKE_PROJECT_NAME}: sanitize undefined behavior" OFF)
 option(SAN_LEAK "${CMAKE_PROJECT_NAME}: sanitize leaks" OFF)
 
-# warnings
 if(MSVC)
     # /Zc:preprocessor - incompatible with Windows.h
     # /Zc:templateScope - TODO: add when msvc 17.5 is the norm
-    add_compile_options(/W4 -D_CRT_SECURE_NO_WARNINGS /Zc:__cplusplus /permissive-
+    add_compile_options(
+        /W4
+        -D_CRT_SECURE_NO_WARNINGS /Zc:__cplusplus /permissive-
         /volatile:iso /Zc:throwingNew /utf-8 -DNOMINMAX=1
-        /w34100 /w34189 /w34701 /w34702 /w34703 /w34706 /w34714 /w34913
         /wd4251 /wd4275
     )
 else()
