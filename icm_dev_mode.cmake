@@ -25,6 +25,7 @@
 #
 #           VERSION HISTORY
 #
+#   1.08 (2023-04-29) Improved (idiomatic) setting of compiler options
 #   1.07 (2023-03-20) Improved sanitizer support: finer grain selection
 #                     MSVC /W4 by default
 #   1.06 (2023-02-02) C standard
@@ -98,56 +99,53 @@ option(SAN_ADDR "${CMAKE_PROJECT_NAME}: sanitize address" OFF)
 option(SAN_UB "${CMAKE_PROJECT_NAME}: sanitize undefined behavior" OFF)
 option(SAN_LEAK "${CMAKE_PROJECT_NAME}: sanitize leaks" OFF)
 
-set(icm_compiler_flags "")
-set(icm_linker_flags "")
-set(icm_compiler_and_linker_flags "")
-
+# warnings
 if(MSVC)
     # /Zc:preprocessor - incompatible with Windows.h
     # /Zc:templateScope - TODO: add when msvc 17.5 is the norm
-    set(icm_compiler_flags "/W4 -D_CRT_SECURE_NO_WARNINGS /Zc:__cplusplus /permissive-\
-        /volatile:iso /Zc:throwingNew /utf-8 -DNOMINMAX=1\
-        /w34100 /w34189 /w34701 /w34702 /w34703 /w34706 /w34714 /w34913\
-        /wd4251 /wd4275"
+    add_compile_options(/W4 -D_CRT_SECURE_NO_WARNINGS /Zc:__cplusplus /permissive-
+        /volatile:iso /Zc:throwingNew /utf-8 -DNOMINMAX=1
+        /w34100 /w34189 /w34701 /w34702 /w34703 /w34706 /w34714 /w34913
+        /wd4251 /wd4275
     )
 else()
-    set(icm_compiler_flags "-Wall -Wextra")
+    add_compile_options(-Wall -Wextra)
 endif()
 
+# sanitizers
 if(MSVC)
     if(SAN_ADDR)
-        set(icm_compiler_flags "${icm_compiler_flags} /fsanitize=address")
+        add_compile_options(/fsanitize=address)
     endif()
     if(SAN_THREAD OR SAN_UB OR SAN_LEAK)
         message(WARNING "Unsupported sanitizers requested for msvc. Ignored")
     endif()
 else()
     if(SAN_THREAD)
-        set(icm_compiler_and_linker_flags "${icm_compiler_and_linker_flags} -fsanitize=thread -g")
+        set(icm_san_flags "${icm_san_flags} -fsanitize=thread -g")
         if(SAN_ADDR OR SAN_UB OR SAN_LEAK)
             message(WARNING "Incompatible sanitizer combination requested. Only 'SAN_THREAD' will be respected")
         endif()
     else()
         if(SAN_ADDR)
-            set(icm_compiler_and_linker_flags "${icm_compiler_and_linker_flags} -fsanitize=address -pthread")
+            set(icm_san_flags "${icm_san_flags} -fsanitize=address -pthread")
         endif()
         if(SAN_UB)
-            set(icm_compiler_and_linker_flags "${icm_compiler_and_linker_flags} -fsanitize=undefined")
+            set(icm_san_flags "${icm_san_flags} -fsanitize=undefined")
         endif()
         if(SAN_LEAK)
             if(APPLE)
                 message(WARNING "Unsupported leak sanitizer requested for Apple. Ignored")
             else()
-                set(icm_compiler_and_linker_flags "${icm_compiler_and_linker_flags} -fsanitize=leak")
+                set(icm_san_flags "${icm_san_flags} -fsanitize=leak")
             endif()
         endif()
     endif()
+    if(icm_san_flags)
+        add_compile_options(${icm_san_flags})
+        add_link_options(${icm_san_flags})
+    endif()
 endif()
-
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${icm_compiler_flags} ${icm_compiler_and_linker_flags}")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${icm_compiler_flags} ${icm_compiler_and_linker_flags}")
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${icm_linker_flags} ${icm_compiler_and_linker_flags}")
-set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${icm_linker_flags} ${icm_compiler_and_linker_flags}")
 
 # all binaries to bin
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
