@@ -25,6 +25,7 @@
 #
 #           VERSION HISTORY
 #
+#   1.09 (2023-07-13) Set USE_FOLDERS to ON
 #   1.08 (2023-04-29) Improved (idiomatic) setting of compiler options
 #   1.07 (2023-03-20) Improved sanitizer support: finer grain selection
 #                     MSVC /W4 by default
@@ -93,6 +94,8 @@ set(CMAKE_C_EXTENSIONS OFF)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
 set(CMAKE_LINK_DEPENDS_NO_SHARED ON)
+
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 option(SAN_THREAD "${CMAKE_PROJECT_NAME}: sanitize thread" OFF)
 option(SAN_ADDR "${CMAKE_PROJECT_NAME}: sanitize address" OFF)
