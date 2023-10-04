@@ -25,6 +25,7 @@
 #
 #           VERSION HISTORY
 #
+#   1.02 (2023-10-04) Add -fvisibility-inlines-hidden for *nix builds
 #   1.01 (2022-10-05) Macros to functions
 #   1.00 (2020-12-25) Initial standalone release
 #
@@ -57,7 +58,10 @@ include_guard(GLOBAL)
 function(icm_add_shared_lib target cname)
     add_library(${target} SHARED ${ARGN})
     if(NOT WIN32)
-        target_compile_options(${target} PRIVATE -fvisibility=hidden)
+        target_compile_options(${target} PRIVATE
+            -fvisibility=hidden
+            -fvisibility-inlines-hidden
+        )
     endif()
 
     target_compile_definitions(${target}
