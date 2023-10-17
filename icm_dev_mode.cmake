@@ -25,6 +25,8 @@
 #
 #           VERSION HISTORY
 #
+#   1.11 (2023-10-17) Slash (/) to dash (-) for MSVC options so as to enable
+#                     -forward-unknown-to-host-compiler when using nvcc
 #   1.10 (2023-07-13) /Zc:templateScope for MSVC
 #                     minor code reorder
 #   1.09 (2023-07-13) Set USE_FOLDERS to ON
@@ -104,10 +106,10 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin) # binaries to bin
 if(MSVC)
     # /Zc:preprocessor - incompatible with Windows.h
     add_compile_options(
-        /W4
-        -D_CRT_SECURE_NO_WARNINGS /Zc:__cplusplus /permissive-
-        /volatile:iso /Zc:throwingNew /Zc:templateScope /utf-8 -DNOMINMAX=1
-        /wd4251 /wd4275
+        -W4
+        -D_CRT_SECURE_NO_WARNINGS -Zc:__cplusplus -permissive-
+        -volatile:iso -Zc:throwingNew -Zc:templateScope -utf-8 -DNOMINMAX=1
+        -wd4251 -wd4275
     )
 else()
     add_compile_options(-Wall -Wextra)
@@ -121,7 +123,7 @@ option(SAN_LEAK "${CMAKE_PROJECT_NAME}: sanitize leaks" OFF)
 
 if(MSVC)
     if(SAN_ADDR)
-        add_compile_options(/fsanitize=address)
+        add_compile_options(-fsanitize=address)
     endif()
     if(SAN_THREAD OR SAN_UB OR SAN_LEAK)
         message(WARNING "Unsupported sanitizers requested for msvc. Ignored")
