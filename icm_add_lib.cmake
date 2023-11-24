@@ -25,6 +25,7 @@
 #
 #           VERSION HISTORY
 #
+#   1.03 (2023-11-24) Use BUILD_SHARED_LIBS as opposed to ICM_STATIC_LIBS
 #   1.02 (2023-10-04) Add -fvisibility-inlines-hidden for *nix builds
 #   1.01 (2022-10-05) Macros to functions
 #   1.00 (2020-12-25) Initial standalone release
@@ -73,13 +74,16 @@ endfunction()
 # icm_add_lib
 #
 # icm_add_lib(mylib MYLIB mylib_a.cpp mylib_b.cpp)
-# Adds a shared library by calling `icm_add_shared_lib` unless:
-# ICM_STATIC_LIBS is true
-# ... or ...
-# ${cname}_STATIC is true
+# Adds a shared library by calling `icm_add_shared_lib` unless any of the
+# following is true:
+# * BUILD_SHARED_LIBS defined and is falsy (the opposide default of add_library)
+# * ${cname}_STATIC is true
 # ... in which case it adds a static library
 function(icm_add_lib target cname)
-    if(ICM_STATIC_LIBS OR ${cname}_STATIC)
+    if(DEFINED BUILD_SHARED_LIBS AND NOT BUILD_SHARED_LIBS)
+        set(bslStatic TRUE)
+    endif()
+    if(bslStatic OR ${cname}_STATIC)
         add_library(${target} STATIC ${ARGN})
     else()
         icm_add_shared_lib(${target} ${cname} ${ARGN})
