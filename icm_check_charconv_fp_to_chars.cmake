@@ -35,6 +35,19 @@
 # To use simply include this file. After that haveCharconvFpToChars will be set
 # to a truthy or a falsy value.
 #
+#           EXAMPLE USAGE
+#
+# include(icm_check_charconv_fp_to_chars)
+# if(NOT haveCharconvFpToChars)
+#     message("no charconv floating point support detected. Using mscharconv")
+#     # using CPM to fetch mscharconv
+#     CPMAddPackage(gh:iboB/mscharconv@1.2.3)
+#     target_link_libraries(mytarget PUBLIC msstl::charconv)
+#     target_compile_definitions(mytarget PUBLIC -DUSE_MSCHARCONV=1)
+# else()
+#     message("detected charconv floating point support")
+# endif()
+#
 #           NOTES
 #
 # This file is bundled with icm_check_charconv_fp_to_chars.cpp and expects it
