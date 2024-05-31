@@ -99,7 +99,7 @@ set(CMAKE_C_EXTENSIONS OFF)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
 # misc config
-set(CMAKE_LINK_DEPENDS_NO_SHARED ON) # only relink exe is so interface changes
+set(CMAKE_LINK_DEPENDS_NO_SHARED ON) # only relink exe if .so interface changes
 set_property(GLOBAL PROPERTY USE_FOLDERS ON) # use solution folders
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin) # binaries to bin
 
