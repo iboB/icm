@@ -25,7 +25,8 @@
 #
 #           VERSION HISTORY
 #
-# 1.0.0 (2024-10-11) Initial release
+# 1.01 (2024-10-25) Allow more values for icm_auto_option
+# 1.00 (2024-10-11) Initial release
 #
 
 # icm_auto_option
@@ -55,16 +56,23 @@
 #     endif()
 # endif()
 #
+
+set(icm_auto_option_valid_values AUTO ON OFF TRUE FALSE YES NO)
+
 macro(icm_auto_option var desc default)
     set(${var} ${default} CACHE STRING ${desc})
+
+    if(NOT ${var} IN_LIST icm_auto_option_valid_values)
+        message(FATAL_ERROR "Invalid value for ${var}: ${${var}}")
+    endif()
+
+    # smaller comprehensive list for GUIs
     set_property(CACHE ${var} PROPERTY STRINGS AUTO ON OFF)
-    if(${${var}} STREQUAL AUTO)
-        set(${var}_REQUIRED)
-    elseif(${${var}} STREQUAL ON)
-        set(${var}_REQUIRED REQUIRED)
-    elseif(${${var}} STREQUAL OFF)
+
+    if(NOT ${var} OR ${${var}} STREQUAL AUTO)
+        # not required
         set(${var}_REQUIRED)
     else()
-        message(FATAL_ERROR "Invalid value for ${var}: ${${var}}")
+        set(${var}_REQUIRED REQUIRED)
     endif()
 endmacro()
