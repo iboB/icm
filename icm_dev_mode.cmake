@@ -25,6 +25,7 @@
 #
 #           VERSION HISTORY
 #
+#   1.12 (2024-10-25) Add export compile commands
 #   1.11 (2023-10-17) Slash (/) to dash (-) for MSVC options so as to enable
 #                     -forward-unknown-to-host-compiler when using nvcc
 #   1.10 (2023-07-13) /Zc:templateScope for MSVC
@@ -70,6 +71,7 @@
 #   to enable thread and address sanitizers
 # * set runtime out directory to bin (useful for msvc so dlls are next to exes)
 # * CMAKE_LINK_DEPENDS_NO_SHARED to ON
+# * export compile commands
 
 if (NOT CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
     set(ICM_DEV_MODE OFF)
@@ -99,6 +101,7 @@ set(CMAKE_C_EXTENSIONS OFF)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
 # misc config
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON) # export compile commands to json
 set(CMAKE_LINK_DEPENDS_NO_SHARED ON) # only relink exe if .so interface changes
 set_property(GLOBAL PROPERTY USE_FOLDERS ON) # use solution folders
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin) # binaries to bin
