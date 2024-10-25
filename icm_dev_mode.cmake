@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: MIT
 # MIT License:
-# Copyright (c) 2020-2023 Borislav Stanimirov
+# Copyright (c) 2020-2024 Borislav Stanimirov
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files(the
@@ -26,6 +26,8 @@
 #           VERSION HISTORY
 #
 #   1.12 (2024-10-25) Add export compile commands
+#                     Bump C++ standard to 20
+#                     Bump C standard to 11
 #   1.11 (2023-10-17) Slash (/) to dash (-) for MSVC options so as to enable
 #                     -forward-unknown-to-host-compiler when using nvcc
 #   1.10 (2023-07-13) /Zc:templateScope for MSVC
@@ -59,8 +61,8 @@
 # ICM_NO_DEVMODE to TRUE
 #
 # The settings are:
-# * C++ standard (default is 17. Override with ICM_DEV_CXX_STANDARD)
-# * C standard (default is 99. Override with ICM_DEV_C_STANDARD)
+# * C++ standard (default is 20. Override with ICM_DEV_CXX_STANDARD)
+# * C standard (default is 11. Override with ICM_DEV_C_STANDARD)
 # * No extensions
 # * Standard required
 # * More warnigns for gcc and clang
@@ -87,14 +89,14 @@ set(ICM_DEV_MODE ON)
 
 # standard
 if (NOT ICM_DEV_CXX_STANDARD)
-    set(ICM_DEV_CXX_STANDARD 17)
+    set(ICM_DEV_CXX_STANDARD 20)
 endif()
 set(CMAKE_CXX_STANDARD ${ICM_DEV_CXX_STANDARD})
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 if (NOT ICM_DEV_C_STANDARD)
-    set(ICM_DEV_C_STANDARD 99)
+    set(ICM_DEV_C_STANDARD 11)
 endif()
 set(CMAKE_C_STANDARD ${ICM_DEV_C_STANDARD})
 set(CMAKE_C_EXTENSIONS OFF)
