@@ -25,6 +25,7 @@
 #
 #           VERSION HISTORY
 #
+#   1.13 (2024-11-11) Use PROJECT_NAME in options
 #   1.12 (2024-10-25) Add export compile commands
 #                     Bump C++ standard to 20
 #                     Bump C standard to 11
@@ -121,10 +122,10 @@ else()
 endif()
 
 # sanitizers
-option(SAN_THREAD "${CMAKE_PROJECT_NAME}: sanitize thread" OFF)
-option(SAN_ADDR "${CMAKE_PROJECT_NAME}: sanitize address" OFF)
-option(SAN_UB "${CMAKE_PROJECT_NAME}: sanitize undefined behavior" OFF)
-option(SAN_LEAK "${CMAKE_PROJECT_NAME}: sanitize leaks" OFF)
+option(SAN_THREAD "${PROJECT_NAME}: sanitize thread" OFF)
+option(SAN_ADDR "${PROJECT_NAME}: sanitize address" OFF)
+option(SAN_UB "${PROJECT_NAME}: sanitize undefined behavior" OFF)
+option(SAN_LEAK "${PROJECT_NAME}: sanitize leaks" OFF)
 
 if(MSVC)
     if(SAN_ADDR)
