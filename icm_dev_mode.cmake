@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: MIT
 # MIT License:
-# Copyright (c) 2020-2024 Borislav Stanimirov
+# Copyright (c) 2020-2025 Borislav Stanimirov
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files(the
@@ -25,6 +25,7 @@
 #
 #           VERSION HISTORY
 #
+#   1.14 (2025-04-14) Only set options for C and C++
 #   1.13 (2024-11-11) Use PROJECT_NAME in options
 #   1.12 (2024-10-25) Add export compile commands
 #                     Bump C++ standard to 20
@@ -109,16 +110,25 @@ set(CMAKE_LINK_DEPENDS_NO_SHARED ON) # only relink exe if .so interface changes
 set_property(GLOBAL PROPERTY USE_FOLDERS ON) # use solution folders
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin) # binaries to bin
 
+function(icm_add_dev_mode_options tool lang)
+    string(JOIN $<SEMICOLON> joined ${ARGN})
+    cmake_language(CALL add_${tool}_options $<$<COMPILE_LANGUAGE:${lang}>:${joined}>)
+endfunction()
+
 if(MSVC)
-    # /Zc:preprocessor - incompatible with Windows.h
-    add_compile_options(
-        -W4
-        -D_CRT_SECURE_NO_WARNINGS -Zc:__cplusplus -permissive-
-        -volatile:iso -Zc:throwingNew -Zc:templateScope -utf-8 -DNOMINMAX=1
+    icm_add_dev_mode_options(compile C,CXX
+        -W4 -D_CRT_SECURE_NO_WARNINGS -utf-8
+    )
+    icm_add_dev_mode_options(compile CXX
+        # -Zc:preprocessor - incompatible with Windows.h
+        -Zc:__cplusplus -permissive-
+        -volatile:iso -Zc:throwingNew -Zc:templateScope -DNOMINMAX=1
         -wd4251 -wd4275
     )
 else()
-    add_compile_options(-Wall -Wextra)
+    icm_add_dev_mode_options(compile C,CXX
+        -Wall -Wextra
+    )
 endif()
 
 # sanitizers
@@ -129,7 +139,7 @@ option(SAN_LEAK "${PROJECT_NAME}: sanitize leaks" OFF)
 
 if(MSVC)
     if(SAN_ADDR)
-        add_compile_options(-fsanitize=address)
+        icm_add_dev_mode_options(compile C,CXX -fsanitize=address)
     endif()
     if(SAN_THREAD OR SAN_UB OR SAN_LEAK)
         message(WARNING "Unsupported sanitizers requested for msvc. Ignored")
@@ -156,7 +166,7 @@ else()
         endif()
     endif()
     if(icm_san_flags)
-        add_compile_options(${icm_san_flags})
-        add_link_options(${icm_san_flags})
+        icm_add_dev_mode_options(compile C,CXX ${icm_san_flags})
+        icm_add_dev_mode_options(link C,CXX ${icm_san_flags})
     endif()
 endif()
