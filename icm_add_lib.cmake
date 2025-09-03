@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: MIT
 # MIT License:
-# Copyright (c) 2020-2024 Borislav Stanimirov
+# Copyright (c) 2020-2025 Borislav Stanimirov
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files(the
@@ -25,6 +25,7 @@
 #
 #           VERSION HISTORY
 #
+#   1.05 (2025-09-03) Only add inlines-hidden to C++ sources
 #   1.04 (2024-11-13) Add icm_add_module and icm_set_visibility_hidden
 #   1.03 (2023-11-24) Use BUILD_SHARED_LIBS as opposed to ICM_STATIC_LIBS
 #   1.02 (2023-10-04) Add -fvisibility-inlines-hidden for *nix builds
@@ -37,7 +38,7 @@ function(icm_set_visibility_hidden target)
     if(NOT WIN32)
         target_compile_options(${target} PRIVATE
             -fvisibility=hidden
-            -fvisibility-inlines-hidden
+            $<$<COMPILE_LANGUAGE:CXX>:-fvisibility-inlines-hidden>            
         )
     endif()
 endfunction()
