@@ -128,6 +128,9 @@ if(MSVC)
 else()
     icm_add_dev_mode_options(compile C,CXX
         -Wall -Wextra
+
+        # this warning is just stupid and defeats the whole purpose of designated initializers
+        -Wno-missing-field-initializers
     )
 endif()
 
