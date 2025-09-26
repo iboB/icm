@@ -25,6 +25,9 @@
 #
 #           VERSION HISTORY
 #
+#   1.15 (2025-09-28) Disable warnings:
+#                     * msvc: attribute [[X]] is not recognized
+#                     * gcc: missing-field-initializers
 #   1.14 (2025-04-14) Only set options for C and C++
 #   1.13 (2024-11-11) Use PROJECT_NAME in options
 #   1.12 (2024-10-25) Add export compile commands
@@ -123,7 +126,7 @@ if(MSVC)
         # -Zc:preprocessor - incompatible with Windows.h
         -Zc:__cplusplus -permissive-
         -volatile:iso -Zc:throwingNew -Zc:templateScope -DNOMINMAX=1
-        -wd4251 -wd4275
+        -wd4251 -wd4275 -wd5030
     )
 else()
     icm_add_dev_mode_options(compile C,CXX
