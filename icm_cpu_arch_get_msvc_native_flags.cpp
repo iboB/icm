@@ -2,30 +2,36 @@
 #include <intrin.h>
 #include <cstdio>
 
+using ar4 = std::array<int, 4>;
+
+ar4 cpuid(int info) {
+    ar4 cpui;
+    __cpuid(cpui.data(), info);
+    return cpui;
+}
+
 const char* get_best_simd() {
-    std::array<int, 4> cpui;
-    __cpuidex(cpui.data(), 7, 0);
-    if (cpui[1] & (1 << 16)) {
+    ar4 i;
+    __cpuidex(i.data(), 7, 0);
+    if (i[1] & (1 << 16)) {
         return "AVX512";
     }
 
-    cpui.fill(0);
-    __cpuid(cpui.data(), 7);
-    if (cpui[1] & (1 << 5)) {
+    i = cpuid(7);
+    if (i[1] & (1 << 5)) {
         return "AVX2";
     }
 
-    cpui.fill(0);
-    __cpuid(cpui.data(), 1);
-    if (cpui[2] & (1 << 28)) {
+    i = cpuid(1);
+    if (i[2] & (1 << 28)) {
         return "AVX";
     }
 
-    if (cpui[2] & (1 << 20)) {
+    if (i[2] & (1 << 20)) {
         return "SSE4.2";
     }
 
-    if (cpui[3] & (1 << 26)) {
+    if (i[3] & (1 << 26)) {
         return "SSE2";
     }
 
