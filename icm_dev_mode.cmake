@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: MIT
 # MIT License:
-# Copyright (c) 2020-2025 Borislav Stanimirov
+# Copyright (c) 2020-2026 Borislav Stanimirov
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files(the
@@ -25,6 +25,8 @@
 #
 #           VERSION HISTORY
 #
+#   1.16 (2026-03-19) Split some msvc-only options to all Windows targets to
+#                     support clang-cl and mingw builds.
 #   1.15 (2025-09-28) Disable warnings:
 #                     * msvc: attribute [[X]] is not recognized
 #                     * gcc: missing-field-initializers
@@ -120,12 +122,12 @@ endfunction()
 
 if(MSVC)
     icm_add_dev_mode_options(compile C,CXX
-        -W4 -D_CRT_SECURE_NO_WARNINGS -utf-8
+        -W4 -utf-8
     )
     icm_add_dev_mode_options(compile CXX
         # -Zc:preprocessor - incompatible with Windows.h
         -Zc:__cplusplus -permissive-
-        -volatile:iso -Zc:throwingNew -Zc:templateScope -DNOMINMAX=1
+        -volatile:iso -Zc:throwingNew -Zc:templateScope
         -wd4251 -wd4275 -wd5030
     )
 else()
@@ -134,6 +136,15 @@ else()
 
         # this warning is just stupid and defeats the whole purpose of designated initializers
         -Wno-missing-field-initializers
+    )
+endif()
+
+if(WIN32)
+    icm_add_dev_mode_options(compile C,CXX
+        -D_CRT_SECURE_NO_WARNINGS
+    )
+    icm_add_dev_mode_options(compile CXX
+        -DNOMINMAX=1
     )
 endif()
 
