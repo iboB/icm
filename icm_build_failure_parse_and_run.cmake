@@ -13,7 +13,7 @@ if(DEFINED CFG)
 endif()
 
 execute_process(
-    COMMAND ${CMAKE_COMMAND} --build . --target @ARG_TARGET@ ${cfgArg}
+    COMMAND ${CMAKE_COMMAND} -E env LC_ALL=C ${CMAKE_COMMAND} --build . --target @ARG_TARGET@ ${cfgArg}
     WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
     RESULT_VARIABLE res
     ERROR_VARIABLE out
